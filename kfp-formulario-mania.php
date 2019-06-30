@@ -80,7 +80,7 @@ function Kfp_Form_Mania_activation()
 function Kfp_Form_Mania_Select_simple()
 {
     global $wpdb;
-
+    wp_enqueue_style('css_form_mania', plugins_url('style.css', __FILE__));
     if (!empty($_POST)) {
         $tabla_dispositivo = $wpdb->prefix . 'dispositivo';
         $nombre = sanitize_text_field($_POST['nombre']);
