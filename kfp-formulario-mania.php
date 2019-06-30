@@ -16,6 +16,10 @@ if (! defined('ABSPATH')) {
 }
 
 register_activation_hook(__FILE__, 'Kfp_Form_Mania_activation');
+register_activation_hook(__FILE__, 'Kfp_Form_Mania_Datos_ejemplo');
+// Define el shortcode que pinta el formulario con campo "select" simple
+add_shortcode('kfp_form_mania_select_simple', 'Kfp_Form_Mania_Select_simple');
+
 
 /**
  * Crea las tablas necesarias durante la activación del plugin
@@ -66,11 +70,64 @@ function Kfp_Form_Mania_activation()
     
     include_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta($sql);
-
-    // Inserta datos de ejemplo
-    Kfp_Form_Mania_Datos_ejemplo();
-    
 }
+
+/**
+ * Implementa formulario con campo select simple
+ *
+ * @return void
+ */
+function Kfp_Form_Mania_Select_simple()
+{
+    global $wpdb;
+
+    if (!empty($_POST)) {
+        $tabla_dispositivo = $wpdb->prefix . 'dispositivo';
+        $nombre = sanitize_text_field($_POST['nombre']);
+        $numero_serie = sanitize_text_field($_POST['numero_serie']);
+        $id_modelo = (int)$_POST['id_modelo'];
+        $id_tipo = (int)$_POST['id_tipo'];
+        $created_at = date('Y-m-d H:i:s');
+        $wpdb->insert(
+            $tabla_dispositivo, 
+            array(
+                'nombre' => $nombre,
+                'numero_serie' => $numero_serie,
+                'id_modelo' => $id_modelo,
+                'id_tipo' => $id_tipo,
+                'created_at' => $created_at,
+            )
+        );
+    }
+    // Trae los tipos de dispositivos de la base de datos
+    $tabla_dispositivo_tipo = $wpdb->prefix . 'dispositivo_tipo';
+    $dispositivo_tipos = $wpdb->get_results("SELECT * from $tabla_dispositivo_tipo");    
+    ob_start();
+    ?>
+    <form action="<?php get_the_permalink(); ?>" method="post"
+        class="alta-registro">
+        <div class="form-input">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre">
+        </div>
+        <div class="form-input">
+            <label for="id_tipo">Tipo</label>
+            <select name="id_tipo">
+                <?php
+                foreach ($dispositivo_tipos as $tipo) {
+                    echo("<option value='$tipo->id'>$tipo->nombre</option>)");
+                }
+                ?>
+            </select>
+        </div>
+        <div class="form-input">
+            <input type="submit" value="Enviar">
+        </div>
+    </form>
+    <?php
+    return ob_get_clean();
+}
+
 
 /**
  * Implementa formulario con campos select enlazados
@@ -99,7 +156,9 @@ function Kfp_Form_Mania_Select_enlazado()
             )
         );
     }
-    // TODO: Traerme los tipos de dispositivos de la base de datos
+    // Trae los tipos de dispositivos de la base de datos
+    $tabla_dispositivo_tipo = $wpdb->prefix . 'dispositivo_tipo';
+    $dispositivo_tipos = $wpdb->get_results("SELECT * from $tabla_dispositivo_tipo");    
     ob_start();
     ?>
     <form action="<?php get_the_permalink(); ?>" method="post"
