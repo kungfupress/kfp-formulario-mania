@@ -1,4 +1,5 @@
 <?php
+/** Archivo: crear_datos_ejemplo.php */
 
 /**
  * Inserta datos de ejemplo en las tablas de la base de datos

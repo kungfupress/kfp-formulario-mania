@@ -1,4 +1,7 @@
 <?php
+/**
+ * Archivo: shortcode_select_simple.php
+ */
 
 /**
  * Implementa formulario con campo select simple

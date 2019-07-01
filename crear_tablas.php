@@ -1,4 +1,7 @@
 <?php
+/** 
+ * Archivo: crear-tablas.php 
+ */
 
 /**
  * Crea las tablas necesarias durante la activación del plugin

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Archivo: shortcode_select_enlazado.php
+ */
 
 /**
  * Implementa formulario con campos select enlazados
