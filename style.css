@@ -1,20 +1,20 @@
-form.cuestionario {
+form.kfp-form-mania {
     max-width: 600px;
 }
 
-form.cuestionario label {
+form.kfp-form-mania label {
     font-weight: bold;
     display: block;
     margin-bottom: 5px;
 }
 
-form.cuestionario .form-input {
+form.kfp-form-mania .form-input {
     padding: 1em;
 }
 
-form.cuestionario .form-input input[type='text'],
-form.cuestionario .form-input input[type='email'],
-form.cuestionario textarea {
+form.kfp-form-mania .form-input input[type='text'],
+form.kfp-form-mania .form-input select,
+form.kfp-form-mania textarea {
     display: block;
     width: 100%;
 }

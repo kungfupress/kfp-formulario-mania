@@ -17,9 +17,9 @@ if (! defined('ABSPATH')) {
 
 register_activation_hook(__FILE__, 'Kfp_Form_Mania_activation');
 register_activation_hook(__FILE__, 'Kfp_Form_Mania_Datos_ejemplo');
-// Define el shortcode que pinta el formulario con campo "select" simple
+// Define los shortcodes que muestran los distintos tipos de formularios
 add_shortcode('kfp_form_mania_select_simple', 'Kfp_Form_Mania_Select_simple');
-
+add_shortcode('kfp_form_manial_select_enlazado', 'Kfp_Form_Mania_Select_enlazado');
 
 /**
  * Crea las tablas necesarias durante la activación del plugin
@@ -42,7 +42,7 @@ function Kfp_Form_Mania_activation()
     $sql[] = "CREATE TABLE $tabla_dispositivo (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         nombre varchar(100) NOT NULL,
-        id_tipo mediumint(9) NOT NULL,
+        id_tipo mediumint(9),
         id_modelo mediumint(9),
         numero_serie varchar(50),
         created_at datetime NOT NULL,
@@ -81,19 +81,16 @@ function Kfp_Form_Mania_Select_simple()
 {
     global $wpdb;
     wp_enqueue_style('css_form_mania', plugins_url('style.css', __FILE__));
-    if (!empty($_POST)) {
+
+    if (!empty($_POST) && $_POST['nombre'] != '' && $_POST['id_tipo'] != '') {
         $tabla_dispositivo = $wpdb->prefix . 'dispositivo';
         $nombre = sanitize_text_field($_POST['nombre']);
-        $numero_serie = sanitize_text_field($_POST['numero_serie']);
-        $id_modelo = (int)$_POST['id_modelo'];
         $id_tipo = (int)$_POST['id_tipo'];
         $created_at = date('Y-m-d H:i:s');
         $wpdb->insert(
             $tabla_dispositivo, 
             array(
                 'nombre' => $nombre,
-                'numero_serie' => $numero_serie,
-                'id_modelo' => $id_modelo,
                 'id_tipo' => $id_tipo,
                 'created_at' => $created_at,
             )
@@ -105,14 +102,15 @@ function Kfp_Form_Mania_Select_simple()
     ob_start();
     ?>
     <form action="<?php get_the_permalink(); ?>" method="post"
-        class="alta-registro">
+        class="kfp-form-mania">
         <div class="form-input">
             <label for="nombre">Nombre</label>
-            <input type="text" name="nombre" id="nombre">
+            <input type="text" name="nombre" id="nombre" required>
         </div>
         <div class="form-input">
             <label for="id_tipo">Tipo</label>
-            <select name="id_tipo">
+            <select name="id_tipo" required>
+                <option value="">Selecciona el tipo de dispositivo</option>
                 <?php
                 foreach ($dispositivo_tipos as $tipo) {
                     echo("<option value='$tipo->id'>$tipo->nombre</option>)");
@@ -128,7 +126,6 @@ function Kfp_Form_Mania_Select_simple()
     return ob_get_clean();
 }
 
-
 /**
  * Implementa formulario con campos select enlazados
  *
@@ -137,42 +134,63 @@ function Kfp_Form_Mania_Select_simple()
 function Kfp_Form_Mania_Select_enlazado()
 {
     global $wpdb;
+    wp_enqueue_style('css_form_mania', plugins_url('style.css', __FILE__));
+    wp_enqueue_script(
+        'js_select_enlazado', 
+        plugins_url('select-enlazado.js', __FILE__)
+    );
 
-    if (!empty($_POST)) {
+    if (!empty($_POST) && $_POST['nombre'] != '' && $_POST['id_modelo'] != '') {
         $tabla_dispositivo = $wpdb->prefix . 'dispositivo';
         $nombre = sanitize_text_field($_POST['nombre']);
-        $numero_serie = sanitize_text_field($_POST['numero_serie']);
         $id_modelo = (int)$_POST['id_modelo'];
-        $id_tipo = (int)$_POST['id_tipo'];
         $created_at = date('Y-m-d H:i:s');
         $wpdb->insert(
             $tabla_dispositivo, 
             array(
                 'nombre' => $nombre,
-                'numero_serie' => $numero_serie,
                 'id_modelo' => $id_modelo,
-                'id_tipo' => $id_tipo,
                 'created_at' => $created_at,
             )
         );
     }
-    // Trae los tipos de dispositivos de la base de datos
-    $tabla_dispositivo_tipo = $wpdb->prefix . 'dispositivo_tipo';
-    $dispositivo_tipos = $wpdb->get_results("SELECT * from $tabla_dispositivo_tipo");    
+    // Trae marcas y modelos de dispositivos de la base de datos
+    $tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
+    $dispositivo_marcas = $wpdb->get_results(
+        "SELECT * FROM $tabla_dispositivo_marca"
+    );
+    $tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
+    $dispositivo_modelos = $wpdb->get_results(
+        "SELECT * FROM $tabla_dispositivo_modelo"
+    );
+
     ob_start();
     ?>
     <form action="<?php get_the_permalink(); ?>" method="post"
-        class="alta-registro">
+        class="kfp-form-mania">
         <div class="form-input">
             <label for="nombre">Nombre</label>
-            <input type="text" name="nombre" id="nombre">
+            <input type="text" name="nombre" id="nombre" required>
         </div>
         <div class="form-input">
-            <label for="id_tipo">Tipo</label>
-            <select name="id_tipo">
+            <label for="id_marca">Marca</label>
+            <select name="id_marca" id="kfp-fm-select-marca" required>
+                <option value="">Selecciona la marca del dispositivo</option>
                 <?php
-                foreach ($dispositivo_tipos as $tipo) {
-                    echo("<option value='$tipo->id'>$tipo->nombre</option>)");
+                foreach ($dispositivo_marcas as $marca) {
+                    echo("<option value='$marca->id'>$marca->nombre</option>)");
+                }
+                ?>
+            </select>
+        </div>
+        <div class="form-input">
+            <label for="id_modelo">Modelo</label>
+            <select name="id_modelo" id="kfp-fm-select-modelo" required>
+                <option value="">Selecciona el modelo del dispositivo</option>
+                <?php
+                foreach ($dispositivo_modelos as $modelo) {
+                    echo("<option data-marca='$modelo->id_marca' 
+                        value='$modelo->id'>$modelo->nombre</option>");
                 }
                 ?>
             </select>
@@ -181,6 +199,9 @@ function Kfp_Form_Mania_Select_enlazado()
             <input type="submit" value="Enviar">
         </div>
     </form>
+
+
+
     <?php
     return ob_get_clean();
 }
