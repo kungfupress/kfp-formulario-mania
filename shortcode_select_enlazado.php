@@ -31,15 +31,14 @@ function Kfp_Form_Mania_Select_enlazado()
             )
         );
     }
+    
     // Trae marcas y modelos de dispositivos de la base de datos
     $tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
-    $dispositivo_marcas = $wpdb->get_results(
-        "SELECT * FROM $tabla_dispositivo_marca"
-    );
+    $dispositivo_marcas = findAll($tabla_dispositivo_marca, $wpdb);
+    
+    
     $tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
-    $dispositivo_modelos = $wpdb->get_results(
-        "SELECT * FROM $tabla_dispositivo_modelo"
-    );
+    $dispositivo_modelos = findAll($tabla_dispositivo_modelo, $wpdb);
 
     ob_start();
     ?>
@@ -79,4 +78,9 @@ function Kfp_Form_Mania_Select_enlazado()
 
     <?php
     return ob_get_clean();
+}
+
+function findAll($tabla, $wpdb) {
+    $registros = $wpdb->get_results("SELECT * FROM $tabla");
+    return $registros;
 }

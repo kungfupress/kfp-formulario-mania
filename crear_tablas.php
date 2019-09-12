@@ -26,6 +26,7 @@ function Kfp_Form_Mania_Crear_tablas()
         nombre varchar(100) NOT NULL,
         id_tipo mediumint(9),
         id_modelo mediumint(9),
+        id_usuario mediumint(9),
         numero_serie varchar(50),
         created_at datetime NOT NULL,
         PRIMARY KEY (id)
