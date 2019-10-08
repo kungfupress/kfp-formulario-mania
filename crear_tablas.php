@@ -16,6 +16,7 @@ function Kfp_Form_Mania_Crear_tablas()
     $tabla_dispositivo_tipo = $wpdb->prefix . 'dispositivo_tipo';
     $tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
     $tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
+    $tabla_dispositivo_variante = $wpdb->prefix . 'dispositivo_variante';
     $charset_collate = $wpdb->get_charset_collate();
     
     // Consulta para crear las tablas
@@ -26,6 +27,7 @@ function Kfp_Form_Mania_Crear_tablas()
         nombre varchar(100) NOT NULL,
         id_tipo mediumint(9),
         id_modelo mediumint(9),
+        id_variante mediumint(9),
         id_usuario mediumint(9),
         numero_serie varchar(50),
         created_at datetime NOT NULL,
@@ -48,6 +50,14 @@ function Kfp_Form_Mania_Crear_tablas()
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         id_marca mediumint(9) NOT NULL,
         nombre varchar(100) NOT NULL,
+        PRIMARY KEY (id)
+        ) $charset_collate";
+
+    $sql[] = "CREATE TABLE $tabla_dispositivo_variante (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        id_modelo mediumint(9) NOT NULL,
+        nombre varchar(100) NOT NULL,
+        anyo varchar(4),
         PRIMARY KEY (id)
         ) $charset_collate";
     
