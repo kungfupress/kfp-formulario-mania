@@ -24,6 +24,10 @@ function Kfp_Form_Mania_Crear_Datos_ejemplo()
             $tabla_dispositivo_marca, 
             array('id' => 2, 'nombre' => 'Samsung')
         );
+        $wpdb->insert( 
+            $tabla_dispositivo_marca, 
+            array('id' => 3, 'nombre' => 'Huawei')
+        );
     }
     if ($wpdb->get_var("SELECT COUNT(*) FROM $tabla_dispositivo_modelo") == 0 ) {
         $wpdb->insert( 
@@ -42,15 +46,35 @@ function Kfp_Form_Mania_Crear_Datos_ejemplo()
             $tabla_dispositivo_modelo, 
             array('id' => 4,'id_marca' => 2,'nombre' => 'Galaxy 9') 
         );
+        $wpdb->insert( 
+            $tabla_dispositivo_modelo, 
+            array('id' => 5,'id_marca' => 3,'nombre' => 'P20 Pro') 
+        );
+        $wpdb->insert( 
+            $tabla_dispositivo_modelo, 
+            array('id' => 6,'id_marca' => 3,'nombre' => 'Honor Band 5') 
+        );
     }
     if ($wpdb->get_var("SELECT COUNT(*) FROM $tabla_dispositivo_variante") == 0 ) {
         $wpdb->insert( 
             $tabla_dispositivo_variante, 
-            array('id' => 1,'id_modelo' => 1,'nombre' => 'G92016HQ', 'anyo' => '2016') 
+            array('id' => 1,'id_modelo' => 4,'nombre' => 'G92016HQ', 'anyo' => '2016') 
         );
         $wpdb->insert( 
             $tabla_dispositivo_variante, 
-            array('id' => 2,'id_modelo' => 1,'nombre' => 'G92018PQR', 'anyo' => '2018') 
+            array('id' => 2,'id_modelo' => 4,'nombre' => 'G92018PQR', 'anyo' => '2018') 
+        );
+        $wpdb->insert( 
+            $tabla_dispositivo_variante, 
+            array('id' => 3,'id_modelo' => 1,'nombre' => 'APX17', 'anyo' => '2017') 
+        );
+        $wpdb->insert( 
+            $tabla_dispositivo_variante, 
+            array('id' => 4,'id_modelo' => 1,'nombre' => 'APX17S', 'anyo' => '2017') 
+        );
+        $wpdb->insert( 
+            $tabla_dispositivo_variante, 
+            array('id' => 5,'id_modelo' => 3,'nombre' => 'G82015P', 'anyo' => '2015') 
         );
     }
     if ($wpdb->get_var("SELECT COUNT(*) FROM $tabla_dispositivo_tipo") == 0 ) {
@@ -64,7 +88,7 @@ function Kfp_Form_Mania_Crear_Datos_ejemplo()
         );
         $wpdb->insert( 
             $tabla_dispositivo_tipo, 
-            array('id' => 3,'nombre' => 'Proyector de vídeo') 
+            array('id' => 3,'nombre' => 'Reloj inteligente') 
         );
     }
 }
