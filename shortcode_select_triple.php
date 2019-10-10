@@ -2,13 +2,12 @@
 /**
  * Archivo: shortcode_select_triple.php
  */
-
 /**
  * Implementa formulario con campos select enlazados
  *
  * @return void
  */
-function Kfp_Form_Mania_Select_triple()
+function Kfp_Fman_Select_triple()
 {
     global $wpdb;
     wp_enqueue_style('css_form_mania', plugins_url('style.css', __FILE__));
@@ -16,24 +15,6 @@ function Kfp_Form_Mania_Select_triple()
         'js_select_triple',
         plugins_url('js/select-triple.js', __FILE__)
     );
-    // Graba los datos del formulario si vienen rellenos los parámetros requeridos
-    if (!empty($_POST) && $_POST['nombre'] != '' && $_POST['id_modelo'] != '' 
-        && $_POST['id_variante'] != '') {
-        $tabla_dispositivo = $wpdb->prefix . 'dispositivo';
-        $nombre = sanitize_text_field($_POST['nombre']);
-        $id_modelo = (int) $_POST['id_modelo'];
-        $id_variante = (int) $_POST['id_variante'];
-        $created_at = date('Y-m-d H:i:s');
-        $wpdb->insert(
-            $tabla_dispositivo,
-            array(
-                'nombre' => $nombre,
-                'id_modelo' => $id_modelo,
-                'id_variante' => $id_variante,
-                'created_at' => $created_at,
-            )
-        );
-    }
     // Trae marcas, modelos y variantes de dispositivos de la base de datos
     // para mostrarlos en los desplegables del formulario
     $tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
@@ -42,17 +23,22 @@ function Kfp_Form_Mania_Select_triple()
     $dispositivo_modelos = $wpdb->get_results("SELECT * FROM $tabla_dispositivo_modelo");
     $tabla_dispositivo_variante = $wpdb->prefix . 'dispositivo_variante';
     $dispositivo_variantes = $wpdb->get_results("SELECT * FROM $tabla_dispositivo_variante");
+    if (isset($_GET['kfp_fman_texto_aviso'])) {
+        echo "<h4>" . $_GET['kfp_fman_texto_aviso'] . "</h4>";
+    }
     ob_start();
     ?>
-    <form action="<?php get_the_permalink();?>" method="post"
-        class="kfp-form-mania">
-        <div class="form-input">
+    <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post"
+        class="kfp-form-mania" id="kfp-fman-form-triple-select">
+        <?php wp_nonce_field('kfp-fman-triple', 'kfp-fman-triple-nonce'); ?>
+        <input type="hidden" name="action" value="kfp-fman-triple">
+         <div class="form-input">
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" id="nombre" required>
         </div>
         <div class="form-input">
             <label for="id_marca">Marca</label>
-            <select name="id_marca" id="kfp-fm-select-marca" required>
+            <select name="id_marca" id="kfp-fman-select-marca" required>
                 <option value="">Selecciona la marca del dispositivo</option>
                 <?php
                 foreach ($dispositivo_marcas as $marca) {
@@ -63,8 +49,8 @@ function Kfp_Form_Mania_Select_triple()
         </div>
         <div class="form-input">
             <label for="id_modelo">Modelo</label>
-            <select name="id_modelo" id="kfp-fm-select-modelo" required>
-                <option value="">Selecciona el modelo del dispositivo</option>
+            <select name="id_modelo" id="kfp-fman-select-modelo" required>
+                <option value="" selected>Selecciona el modelo del dispositivo</option>
                 <?php
                 foreach ($dispositivo_modelos as $modelo) {
                     echo ("<option data-marca='$modelo->id_marca'
@@ -75,8 +61,8 @@ function Kfp_Form_Mania_Select_triple()
         </div>
         <div class="form-input">
             <label for="id_variante">Variante</label>
-            <select name="id_variante" id="kfp-fm-select-variante" required>
-                <option value="">Selecciona la variante del dispositivo</option>
+            <select name="id_variante" id="kfp-fman-select-variante">
+                <option value="0" selected>No hay variantes para este modelo</option>
                 <?php
                 foreach ($dispositivo_variantes as $variante) {
                     echo ("<option data-modelo='$variante->id_modelo'
