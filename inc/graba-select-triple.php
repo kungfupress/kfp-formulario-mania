@@ -2,12 +2,17 @@
 /**
  * File: graba-select-triple.php
  *
+ * TODO:
+ * store post data in transient with set_transient()
+ * store any errors in transient
+ * redirect to form output
+ * check for errors in transient
+ * load post values into form fields from transient.
+ *
  * @package kfp-fman
  */
 
-// Evita que se llame directamente a este fichero sin pasar por WordPress.
 defined( 'ABSPATH' ) || die();
-
 // Agrega los action hooks para grabar el formulario (el primero para usuarios
 // logeados y el otro para el resto)
 // Lo que viene tras admin_post_ y admin_post_nopriv_ tiene que coincidir con
@@ -79,11 +84,4 @@ function kfp_fman_graba_triple_select() {
 		);
 		exit();
 	}
-	/**
-	 * Store post data in transient with set_transient()
-	 * store any errors in transient
-	 * redirect to form output
-	 * check for errors in transient
-	 * load post values into form fields from transient.
-	 */
 }

@@ -5,6 +5,7 @@
  * @package kfp-man
  */
 
+defined( 'ABSPATH' ) || die();
 /**
  * Implementa formulario con campos select enlazados.
  *
@@ -12,10 +13,18 @@
  */
 function kfp_fman_select_triple() {
 	global $wpdb;
-	wp_enqueue_style( 'css_form_mania', plugins_url( '../css/style.css', __FILE__ ) );
+	wp_enqueue_style(
+		'css_form_mania',
+		plugins_url( '../css/style.css', __FILE__ ),
+		null,
+		KFP_FMAN_VERSION
+	);
 	wp_enqueue_script(
 		'js_select_triple',
-		plugins_url( '../js/select-triple.js', __FILE__ )
+		plugins_url( '../js/select-ttriple.js', __FILE__ ),
+		array( 'jquery' ),
+		KFP_FMAN_VERSION,
+		false
 	);
 	// Trae marcas, modelos y variantes de dispositivos de la base de datos
 	// para mostrarlos en los desplegables del formulario.

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: KFP Formulario Manía
  * Author: KungFuPress
- * Version: 1.0
+ * Version: 1.3.0
  * Description: Plugin con ejemplos de formularios de todo tipo y color
  * Author URI: https://kungfupress.com
  *
@@ -11,19 +11,18 @@
  */
 
 // Salir si se intenta acceder directamente.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || die();
 
-$ruta_plugin = plugin_dir_path( __FILE__ );
+define( 'KFP_FMAN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'KFP_FMAN_VERSION', '1.3.0' );
 
-require_once $ruta_plugin . 'inc/crear-tablas.php';
-require_once $ruta_plugin . 'inc/crear-datos-ejemplo.php';
-require_once $ruta_plugin . 'inc/shortcode-select-simple.php';
-require_once $ruta_plugin . 'inc/shortcode-select-enlazado.php';
-require_once $ruta_plugin . 'inc/shortcode-select-triple.php';
-require_once $ruta_plugin . 'inc/shortcode-select-user.php';
-require_once $ruta_plugin . 'inc/graba-select-triple.php';
+require_once KFP_FMAN_DIR . 'inc/crear-tablas.php';
+require_once KFP_FMAN_DIR . 'inc/crear-datos-ejemplo.php';
+require_once KFP_FMAN_DIR . 'inc/shortcode-select-simple.php';
+require_once KFP_FMAN_DIR . 'inc/shortcode-select-enlazado.php';
+require_once KFP_FMAN_DIR . 'inc/shortcode-select-triple.php';
+require_once KFP_FMAN_DIR . 'inc/shortcode-select-user.php';
+require_once KFP_FMAN_DIR . 'inc/graba-select-triple.php';
 
 register_activation_hook( __FILE__, 'kfp_form_mania_crear_tablas' );
 register_activation_hook( __FILE__, 'kfp_form_mania_crear_datos_ejemplo' );

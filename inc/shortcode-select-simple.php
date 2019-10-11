@@ -5,6 +5,7 @@
  * @package kfp-man
  */
 
+defined( 'ABSPATH' ) || die();
 /**
  * Implementa formulario con campo select simple.
  *
@@ -12,7 +13,12 @@
  */
 function kfp_form_mania_select_simple() {
 	global $wpdb;
-	wp_enqueue_style( 'css_form_mania', plugins_url( 'css/style.css', __FILE__ ) );
+	wp_enqueue_style(
+		'css_form_mania',
+		plugins_url( 'css/style.css', __FILE__ ),
+		null,
+		KFP_FMAN_VERSION
+	);
 
 	if ( ! empty( $_POST ) && $_POST['nombre'] != '' && $_POST['id_marca'] != '' ) {
 		$tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';

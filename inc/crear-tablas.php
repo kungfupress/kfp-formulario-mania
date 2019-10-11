@@ -5,9 +5,7 @@
  * @package kfp-fman
  */
 
-// Evita que se llame directamente a este fichero sin pasar por WordPress.
 defined( 'ABSPATH' ) || die();
-
 /**
  * Crea las tablas necesarias durante la activación del plugin
  *

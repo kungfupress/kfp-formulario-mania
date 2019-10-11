@@ -5,9 +5,7 @@
  * @package kfp-fman
  */
 
-// Evita que se llame directamente a este fichero sin pasar por WordPress.
 defined( 'ABSPATH' ) || die();
-
 /**
  * Inserta datos de ejemplo en las tablas de la base de datos si están vacías
  *

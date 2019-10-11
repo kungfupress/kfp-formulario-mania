@@ -5,6 +5,7 @@
  * @package kfp-fman
  */
 
+defined( 'ABSPATH' ) || die();
 /**
  * Implementa formulario con campos select enlazados.
  *
@@ -12,13 +13,18 @@
  */
 function kfp_form_mania_select_enlazado() {
 	global $wpdb;
-	wp_enqueue_style( 'css_form_mania', plugins_url( '../css/style.css', __FILE__ ), null, '1.0' );
+	wp_enqueue_style(
+		'css_form_mania',
+		plugins_url( '../css/style.css', __FILE__ ),
+		null,
+		KFP_FMAN_VERSION
+	);
 	wp_enqueue_script(
 		'js_select_enlazado',
 		plugins_url( '../js/select-enlazado.js', __FILE__ ),
 		'jquery',
 		true,
-		'1.0'
+		KFP_FMAN_VERSION
 	);
 	if ( ! empty( $_POST ) && $_POST['nombre'] != '' && $_POST['id_modelo'] != '' ) {
 		$tabla_dispositivo = $wpdb->prefix . 'dispositivo';
