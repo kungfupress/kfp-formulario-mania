@@ -17,13 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ruta_plugin = plugin_dir_path( __FILE__ );
 
-require_once $ruta_plugin . 'crear-tablas.php';
-require_once $ruta_plugin . 'crear-datos-ejemplo.php';
-require_once $ruta_plugin . 'shortcode-select-simple.php';
-require_once $ruta_plugin . 'shortcode-select-enlazado.php';
-require_once $ruta_plugin . 'shortcode-select-triple.php';
-require_once $ruta_plugin . 'shortcode-select-user.php';
-require_once $ruta_plugin . 'graba-select-triple.php';
+require_once $ruta_plugin . 'inc/crear-tablas.php';
+require_once $ruta_plugin . 'inc/crear-datos-ejemplo.php';
+require_once $ruta_plugin . 'inc/shortcode-select-simple.php';
+require_once $ruta_plugin . 'inc/shortcode-select-enlazado.php';
+require_once $ruta_plugin . 'inc/shortcode-select-triple.php';
+require_once $ruta_plugin . 'inc/shortcode-select-user.php';
+require_once $ruta_plugin . 'inc/graba-select-triple.php';
 
 register_activation_hook( __FILE__, 'kfp_form_mania_crear_tablas' );
 register_activation_hook( __FILE__, 'kfp_form_mania_crear_datos_ejemplo' );

@@ -6,21 +6,20 @@
  */
 
 /**
- * Implementa formulario con campos select enlazados
+ * Implementa formulario con campos select enlazados.
  *
- * @return void
+ * @return string
  */
 function kfp_form_mania_select_enlazado() {
 	global $wpdb;
-	wp_enqueue_style( 'css_form_mania', plugins_url( 'style.css', __FILE__ ), null, '1.0' );
+	wp_enqueue_style( 'css_form_mania', plugins_url( '../css/style.css', __FILE__ ), null, '1.0' );
 	wp_enqueue_script(
 		'js_select_enlazado',
-		plugins_url( 'select-enlazado.js', __FILE__ ),
+		plugins_url( '../js/select-enlazado.js', __FILE__ ),
 		'jquery',
 		true,
 		'1.0'
 	);
-
 	if ( ! empty( $_POST ) && $_POST['nombre'] != '' && $_POST['id_modelo'] != '' ) {
 		$tabla_dispositivo = $wpdb->prefix . 'dispositivo';
 		$nombre            = sanitize_text_field( $_POST['nombre'] );
@@ -35,14 +34,11 @@ function kfp_form_mania_select_enlazado() {
 			)
 		);
 	}
-
-	// Trae marcas y modelos de dispositivos de la base de datos
+	// Trae marcas y modelos de dispositivos de la base de datos.
 	$tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
-	$dispositivo_marcas      = findAll( $tabla_dispositivo_marca, $wpdb );
-
+	$dispositivo_marcas      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" );
 	$tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
-	$dispositivo_modelos      = findAll( $tabla_dispositivo_modelo, $wpdb );
-
+	$dispositivo_modelos      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" );
 	ob_start();
 	?>
 	<form action="<?php get_the_permalink(); ?>" method="post"
@@ -82,9 +78,4 @@ function kfp_form_mania_select_enlazado() {
 
 	<?php
 	return ob_get_clean();
-}
-
-function findAll( $tabla, $wpdb ) {
-	$registros = $wpdb->get_results( "SELECT * FROM $tabla" );
-	return $registros;
 }
