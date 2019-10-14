@@ -1,6 +1,6 @@
 <?php
 /**
- * File: shortcode_select_enlazado.php
+ * File: kfp-formulario-mania/inc/shortcode_select_enlazado.php
  *
  * @package kfp-fman
  */
@@ -26,9 +26,9 @@ function kfp_form_mania_select_enlazado() {
 		true,
 		KFP_FMAN_VERSION
 	);
-	if ( ! empty( $_POST ) && $_POST['nombre'] != '' && $_POST['id_modelo'] != '' ) {
+	if ( isset( $_POST ) && isset( $_POST['nombre'] ) && isset( $_POST['id_modelo'] ) ) {
 		$tabla_dispositivo = $wpdb->prefix . 'dispositivo';
-		$nombre            = sanitize_text_field( $_POST['nombre'] );
+		$nombre            = sanitize_text_field( wp_unslash( $_POST['nombre'] ) );
 		$id_modelo         = (int) $_POST['id_modelo'];
 		$created_at        = date( 'Y-m-d H:i:s' );
 		$wpdb->insert(
@@ -41,10 +41,12 @@ function kfp_form_mania_select_enlazado() {
 		); // db call ok; no-cache ok.
 	}
 	// Trae marcas y modelos de dispositivos de la base de datos.
-	$tabla_dispositivo_marca  = $wpdb->prefix . 'dispositivo_marca';
-	$dispositivo_marcas       = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" ); // db call ok; no-cache ok.
-	$tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
-	$dispositivo_modelos      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" ); // db call ok; no-cache ok.
+	$dispositivo_marcas  = $wpdb->get_results(
+		"SELECT * FROM `{$$wpdb->prefix}dispositivo_marca`"
+	); // db call ok; no-cache ok.
+	$dispositivo_modelos = $wpdb->get_results(
+		"SELECT * FROM `{$$wpdb->prefix}dispositivo_modelo`"
+	); // db call ok; no-cache ok.
 	ob_start();
 	?>
 	<form action="<?php get_the_permalink(); ?>" method="post"
