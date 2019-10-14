@@ -15,32 +15,35 @@ function kfp_form_mania_select_simple() {
 	global $wpdb;
 	wp_enqueue_style(
 		'css_form_mania',
-		plugins_url( 'css/style.css', __FILE__ ),
+		plugins_url( '../css/style.css', __FILE__ ),
 		null,
 		KFP_FMAN_VERSION
 	);
-
-	if ( ! empty( $_POST ) && $_POST['nombre'] != '' && $_POST['id_marca'] != '' ) {
-		$tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
-		$nombre                   = sanitize_text_field( $_POST['nombre'] );
-		$id_marca                 = (int) $_POST['id_marca'];
+	if ( isset( $_POST )
+		&& isset( $_POST['nombre'] )
+		&& isset( $_POST['id_marca'] )
+		&& isset( $_POST['kfp-fman-simple-nonce'] )
+		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kfp-fman-simple-nonce'] ) ), 'kfp-man-simple' )
+		) {
+		$nombre   = sanitize_text_field( wp_unslash( $_POST['nombre'] ) );
+		$id_marca = (int) $_POST['id_marca'];
 		$wpdb->insert(
-			$tabla_dispositivo_modelo,
+			$wpdb->prefix . 'dispositivo_modelo',
 			array(
 				'nombre'   => $nombre,
 				'id_marca' => $id_marca,
 			)
-		);
+		); // db call ok; no-cache ok.
 	}
 	// Trae las marcas de dispositivos de la base de datos.
-	$tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
-	$dispositivo_marcas      = $wpdb->get_results(
-		"SELECT * from $tabla_dispositivo_marca ORDER BY nombre"
-	);
+	$dispositivo_marcas = $wpdb->get_results(
+		"SELECT * FROM `{$wpdb->prefix}dispositivo_marca` ORDER BY nombre"
+	); // db call ok; no-cache ok.
 	ob_start();
 	?>
 	<form action="<?php get_the_permalink(); ?>" method="post"
 		class="kfp-form-mania">
+		<?php wp_nonce_field( 'kfp-fman-simple', 'kfp-fman-simple-nonce' ); ?>
 		<div class="form-input">
 			<label for="nombre">Modelo</label>
 			<input type="text" name="nombre" id="nombre" required>
@@ -51,7 +54,10 @@ function kfp_form_mania_select_simple() {
 				<option value="">Selecciona la marca</option>
 				<?php
 				foreach ( $dispositivo_marcas as $marca ) {
-					echo( "<option value='$marca->id'>$marca->nombre</option>)" );
+					echo(
+						'<option value="' . esc_attr( $marca->id ) . '">'
+						. esc_attr( $marca->nombre ) . '</option>'
+					);
 				}
 				?>
 			</select>

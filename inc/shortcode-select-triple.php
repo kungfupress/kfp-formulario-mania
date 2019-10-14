@@ -28,12 +28,12 @@ function kfp_fman_select_triple() {
 	);
 	// Trae marcas, modelos y variantes de dispositivos de la base de datos
 	// para mostrarlos en los desplegables del formulario.
-	$tabla_dispositivo_marca    = $wpdb->prefix . 'dispositivo_marca';
-	$dispositivo_marcas         = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" );
+	$tabla_dispositivo_marca    = $wpdb->prefix . 'dispositivo_marca'; // db call ok; no-cache ok.
+	$dispositivo_marcas         = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" ); // db call ok; no-cache ok.
 	$tabla_dispositivo_modelo   = $wpdb->prefix . 'dispositivo_modelo';
-	$dispositivo_modelos        = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" );
+	$dispositivo_modelos        = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" ); // db call ok; no-cache ok.
 	$tabla_dispositivo_variante = $wpdb->prefix . 'dispositivo_variante';
-	$dispositivo_variantes      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_variante" );
+	$dispositivo_variantes      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_variante" ); // db call ok; no-cache ok.
 	if ( isset( $_GET['kfp_fman_texto_aviso'] ) ) {
 		echo '<h4>' . $_GET['kfp_fman_texto_aviso'] . '</h4>';
 	}

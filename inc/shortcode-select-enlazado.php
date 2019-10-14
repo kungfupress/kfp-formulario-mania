@@ -38,17 +38,18 @@ function kfp_form_mania_select_enlazado() {
 				'id_modelo'  => $id_modelo,
 				'created_at' => $created_at,
 			)
-		);
+		); // db call ok; no-cache ok.
 	}
 	// Trae marcas y modelos de dispositivos de la base de datos.
-	$tabla_dispositivo_marca = $wpdb->prefix . 'dispositivo_marca';
-	$dispositivo_marcas      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" );
+	$tabla_dispositivo_marca  = $wpdb->prefix . 'dispositivo_marca';
+	$dispositivo_marcas       = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" ); // db call ok; no-cache ok.
 	$tabla_dispositivo_modelo = $wpdb->prefix . 'dispositivo_modelo';
-	$dispositivo_modelos      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" );
+	$dispositivo_modelos      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" ); // db call ok; no-cache ok.
 	ob_start();
 	?>
 	<form action="<?php get_the_permalink(); ?>" method="post"
 		class="kfp-form-mania">
+		<?php wp_nonce_field( 'kfp-fman-enlazado', 'kfp-fman-enlazado-nonce' ); ?>
 		<div class="form-input">
 			<label for="nombre">Nombre</label>
 			<input type="text" name="nombre" id="nombre" required>
