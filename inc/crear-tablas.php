@@ -1,6 +1,6 @@
 <?php
 /**
- * File: crear-tablas.php
+ * File: kfp-formulario-mania/inc/crear-tablas.php
  *
  * @package kfp-fman
  */
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || die();
  *
  * @return void
  */
-function kfp_form_mania_crear_tablas() {
+function kfp_fman_crear_tablas() {
 	global $wpdb;
 	$sql                        = array();
 	$tabla_dispositivo          = $wpdb->prefix . 'dispositivo';

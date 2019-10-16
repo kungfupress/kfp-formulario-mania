@@ -1,6 +1,6 @@
 <?php
 /**
- * File: shortcode_select_simple.php
+ * File: kfp-formulario-mania/inc/shortcode_select_simple.php
  *
  * @package kfp-man
  */
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || die();
  *
  * @return string
  */
-function kfp_form_mania_select_simple() {
+function kfp_fman_select_simple() {
 	global $wpdb;
 	wp_enqueue_style(
 		'css_form_mania',

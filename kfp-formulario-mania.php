@@ -22,13 +22,14 @@ require_once KFP_FMAN_DIR . 'inc/shortcode-select-simple.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-enlazado.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-triple.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-user.php';
+require_once KFP_FMAN_DIR . 'inc/graba-select-enlazado.php';
 require_once KFP_FMAN_DIR . 'inc/graba-select-triple.php';
 
-register_activation_hook( __FILE__, 'kfp_form_mania_crear_tablas' );
-register_activation_hook( __FILE__, 'kfp_form_mania_crear_datos_ejemplo' );
+register_activation_hook( __FILE__, 'kfp_fman_crear_tablas' );
+register_activation_hook( __FILE__, 'kfp_fman_crear_datos_ejemplo' );
 
 // Define los shortcodes que muestran los distintos tipos de formularios.
-add_shortcode( 'kfp_form_mania_select_simple', 'kfp_form_mania_select_simple' );
-add_shortcode( 'kfp_form_mania_select_enlazado', 'kfp_form_mania_select_enlazado' );
-add_shortcode( 'kfp_form_mania_select_triple', 'kfp_fman_select_triple' );
-add_shortcode( 'kfp_form_mania_select_user', 'kfp_form_mania_select_user' );
+add_shortcode( 'kfp_fman_select_simple', 'kfp_fman_select_simple' );
+add_shortcode( 'kfp_fman_select_enlazado', 'kfp_fman_select_enlazado' );
+add_shortcode( 'kfp_fman_select_triple', 'kfp_fman_select_triple' );
+add_shortcode( 'kfp_fman_select_user', 'kfp_fman_select_user' );

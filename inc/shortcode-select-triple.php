@@ -1,6 +1,6 @@
 <?php
 /**
- * File: shortcode-select-triple.php
+ * File: kfp-formulario-mania/inc/shortcode-select-triple.php
  *
  * @package kfp-man
  */
@@ -21,27 +21,27 @@ function kfp_fman_select_triple() {
 	);
 	wp_enqueue_script(
 		'js_select_triple',
-		plugins_url( '../js/select-ttriple.js', __FILE__ ),
+		plugins_url( '../js/select-triple.js', __FILE__ ),
 		array( 'jquery' ),
 		KFP_FMAN_VERSION,
 		false
 	);
 	// Trae marcas, modelos y variantes de dispositivos de la base de datos
 	// para mostrarlos en los desplegables del formulario.
-	$tabla_dispositivo_marca    = $wpdb->prefix . 'dispositivo_marca'; // db call ok; no-cache ok.
-	$dispositivo_marcas         = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_marca" ); // db call ok; no-cache ok.
-	$tabla_dispositivo_modelo   = $wpdb->prefix . 'dispositivo_modelo';
-	$dispositivo_modelos        = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_modelo" ); // db call ok; no-cache ok.
-	$tabla_dispositivo_variante = $wpdb->prefix . 'dispositivo_variante';
-	$dispositivo_variantes      = $wpdb->get_results( "SELECT * FROM $tabla_dispositivo_variante" ); // db call ok; no-cache ok.
-	if ( isset( $_GET['kfp_fman_texto_aviso'] ) ) {
-		echo '<h4>' . $_GET['kfp_fman_texto_aviso'] . '</h4>';
+	$dispositivo_marcas    = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}dispositivo_marca`" ); // db call ok; no-cache ok.
+	$dispositivo_modelos   = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}dispositivo_modelo`" ); // db call ok; no-cache ok.
+	$dispositivo_variantes = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}dispositivo_variante`" ); // db call ok; no-cache ok.
+	if ( filter_input( INPUT_GET, 'kfp_fman_status', FILTER_SANITIZE_STRING ) === 'success' ) {
+		echo '<h4>Dispositivo grabado correctamente</h4>';
+	}
+	if ( filter_input( INPUT_GET, 'kfp_fman_status', FILTER_SANITIZE_STRING ) === 'error' ) {
+		echo '<h4>Se ha producido un error al grabar el dispositivo</h4>';
 	}
 	ob_start();
 	?>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"
 		class="kfp-form-mania" id="kfp-fman-form-triple-select">
-		<?php wp_nonce_field( 'kfp-fman-triple', 'kfp-fman-triple-nonce' ); ?>
+		<?php wp_nonce_field( 'kfp-fman-triple-action', 'kfp-fman-triple-nonce' ); ?>
 		<input type="hidden" name="action" value="kfp-fman-triple">
 		<div class="form-input">
 			<label for="nombre">Nombre</label>
@@ -53,7 +53,8 @@ function kfp_fman_select_triple() {
 				<option value="">Selecciona la marca del dispositivo</option>
 				<?php
 				foreach ( $dispositivo_marcas as $marca ) {
-					echo ( "<option value='$marca->id'>$marca->nombre</option>)" );
+					echo ( '<option value="' . esc_attr( $marca->id ) . '">'
+					. esc_attr( $marca->nombre ) . '</option>' );
 				}
 				?>
 			</select>
@@ -64,8 +65,9 @@ function kfp_fman_select_triple() {
 				<option value="" selected>Selecciona el modelo del dispositivo</option>
 				<?php
 				foreach ( $dispositivo_modelos as $modelo ) {
-					echo ( "<option data-marca='$modelo->id_marca'
-						value='$modelo->id'>$modelo->nombre</option>" );
+					echo ( '<option data-marca="' . esc_attr( $modelo->id_marca )
+						. '" value="' . esc_attr( $modelo->id ) . '">'
+						. esc_attr( $modelo->nombre ) . '</option>' );
 				}
 				?>
 			</select>
@@ -76,8 +78,9 @@ function kfp_fman_select_triple() {
 				<option value="0" selected>No hay variantes para este modelo</option>
 				<?php
 				foreach ( $dispositivo_variantes as $variante ) {
-					echo ( "<option data-modelo='$variante->id_modelo'
-                        value='$variante->id'>$variante->nombre</option>" );
+					echo ( '<option data-modelo="' . esc_attr( $variante->id_modelo )
+						. '" value=" ' . esc_attr( $variante->id ) . '">'
+						. esc_attr( $variante->nombre ) . '</option>' );
 				}
 				?>
 			</select>

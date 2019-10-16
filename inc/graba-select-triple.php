@@ -1,6 +1,6 @@
 <?php
 /**
- * File: graba-select-triple.php
+ * File: kfp-formulario-mania/inc/graba-select-triple.php
  *
  * TODO:
  * store post data in transient with set_transient()
@@ -17,8 +17,8 @@ defined( 'ABSPATH' ) || die();
 // logeados y el otro para el resto)
 // Lo que viene tras admin_post_ y admin_post_nopriv_ tiene que coincidir con
 // el value del campo input con name "action" del formulario enviado.
-add_action( 'admin_post_kfp-fman-triple', 'Kfp_Fman_Graba_Triple_select' );
-add_action( 'admin_post_nopriv_kfp-fman-triple', 'Kfp_Fman_Graba_Triple_select' );
+add_action( 'admin_post_kfp-fman-triple', 'kfp_fman_graba_triple_select' );
+add_action( 'admin_post_nopriv_kfp-fman-triple', 'kfp_fman_graba_triple_select' );
 /**
  * Graba los valores que vienen del formulario con triple select
  *
@@ -36,16 +36,17 @@ function kfp_fman_graba_triple_select() {
 	 * Invertir este if y lanzar error
 	 */
 	// Graba los datos del formulario si vienen rellenos los parámetros requeridos.
-	if ( isset( $_POST['kfp-fman-triple-nonce'] )
-		&& isset( $_POST['nombre'] )
+	if ( isset( $_POST['nombre'] )
 		&& isset( $_POST['id_modelo'] )
 		&& isset( $_POST['kfp-fman-triple-nonce'] )
-		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kfp-fman-triple-nonce'] ) ), 'kfp-man-triple' )
+		&& wp_verify_nonce(
+			sanitize_text_field( wp_unslash( $_POST['kfp-fman-triple-nonce'] ) ),
+			'kfp-fman-triple-action'
+		)
 		) {
 		$tabla_dispositivo = $wpdb->prefix . 'dispositivo';
 		$nombre            = sanitize_text_field( wp_unslash( $_POST['nombre'] ) );
 		$id_modelo         = (int) $_POST['id_modelo'];
-
 		if ( isset( $_POST['id_variante'] ) ) {
 			$id_variante = (int) $_POST['id_variante'];
 		}
@@ -59,32 +60,16 @@ function kfp_fman_graba_triple_select() {
 				'created_at'  => $created_at,
 			)
 		); // db call ok; no-cache ok.
-		$aviso       = 'success';
-		$texto_aviso = 'Se ha registrado un dispositivo correctamente. ¡Gracias!';
 		wp_safe_redirect(
 			esc_url_raw(
-				add_query_arg(
-					array(
-						'kfp_fman_aviso'       => $aviso,
-						'kfp_fman_texto_aviso' => $texto_aviso,
-					),
-					$url_origen
-				)
+				add_query_arg( 'kfp_fman_status', 'success', $url_origen )
 			)
 		);
 		exit();
 	} else {
-		$aviso       = 'error';
-		$texto_aviso = 'Por favor, rellena los contenidos requeridos del formulario';
 		wp_safe_redirect(
 			esc_url_raw(
-				add_query_arg(
-					array(
-						'kfp_fman_aviso'       => $aviso,
-						'kfp_fman_texto_aviso' => $texto_aviso,
-					),
-					$url_origen
-				)
+				add_query_arg( 'kfp_fman_status', 'error', $url_origen )
 			)
 		);
 		exit();

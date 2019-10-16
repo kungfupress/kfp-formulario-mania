@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || die();
  *
  * @return string
  */
-function kfp_form_mania_select_enlazado() {
+function kfp_fman_select_enlazado() {
 	global $wpdb;
 	wp_enqueue_style(
 		'css_form_mania',
@@ -26,32 +26,25 @@ function kfp_form_mania_select_enlazado() {
 		true,
 		KFP_FMAN_VERSION
 	);
-	if ( isset( $_POST ) && isset( $_POST['nombre'] ) && isset( $_POST['id_modelo'] ) ) {
-		$tabla_dispositivo = $wpdb->prefix . 'dispositivo';
-		$nombre            = sanitize_text_field( wp_unslash( $_POST['nombre'] ) );
-		$id_modelo         = (int) $_POST['id_modelo'];
-		$created_at        = date( 'Y-m-d H:i:s' );
-		$wpdb->insert(
-			$tabla_dispositivo,
-			array(
-				'nombre'     => $nombre,
-				'id_modelo'  => $id_modelo,
-				'created_at' => $created_at,
-			)
-		); // db call ok; no-cache ok.
-	}
 	// Trae marcas y modelos de dispositivos de la base de datos.
 	$dispositivo_marcas  = $wpdb->get_results(
-		"SELECT * FROM `{$$wpdb->prefix}dispositivo_marca`"
+		"SELECT * FROM `{$wpdb->prefix}dispositivo_marca`"
 	); // db call ok; no-cache ok.
 	$dispositivo_modelos = $wpdb->get_results(
-		"SELECT * FROM `{$$wpdb->prefix}dispositivo_modelo`"
+		"SELECT * FROM `{$wpdb->prefix}dispositivo_modelo`"
 	); // db call ok; no-cache ok.
+	if ( filter_input( INPUT_GET, 'kfp_fman_status', FILTER_SANITIZE_STRING ) === 'success' ) {
+		echo '<h4>Dispositivo grabado correctamente</h4>';
+	}
+	if ( filter_input( INPUT_GET, 'kfp_fman_status', FILTER_SANITIZE_STRING ) === 'error' ) {
+		echo '<h4>Se ha producido un error al grabar el dispositivo</h4>';
+	}
 	ob_start();
 	?>
-	<form action="<?php get_the_permalink(); ?>" method="post"
-		class="kfp-form-mania">
-		<?php wp_nonce_field( 'kfp-fman-enlazado', 'kfp-fman-enlazado-nonce' ); ?>
+	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" 
+		method="post" class="kfp-form-mania">
+		<?php wp_nonce_field( 'kfp-fman-enlazado-action', 'kfp-fman-enlazado-nonce' ); ?>
+		<input type="hidden" name="action" value="kfp-fman-enlazado">
 		<div class="form-input">
 			<label for="nombre">Nombre</label>
 			<input type="text" name="nombre" id="nombre" required>
@@ -62,7 +55,8 @@ function kfp_form_mania_select_enlazado() {
 				<option value="">Selecciona la marca del dispositivo</option>
 				<?php
 				foreach ( $dispositivo_marcas as $marca ) {
-					echo( "<option value='$marca->id'>$marca->nombre</option>)" );
+					echo( '<option value="' . esc_attr( $marca->id )
+						. '">' . esc_attr( $marca->nombre ) . '</option>' );
 				}
 				?>
 			</select>
