@@ -29,9 +29,9 @@ function kfp_fman_graba_select_enlazado() {
 		&& isset( $_POST['id_modelo'] )
 		&& isset( $_POST['kfp-fman-enlazado-nonce'] )
 		&& wp_verify_nonce(
-			sanitize_text_field( wp_unslash( $_POST['kfp-fman-enlazado-nonce'] ) ),
-			'kfp-fman-enlazado-action'
-		)
+		sanitize_text_field( wp_unslash( $_POST['kfp-fman-enlazado-nonce'] ) ),
+		'kfp-fman-enlazado-action'
+	)
 	) {
 		$nombre     = sanitize_text_field( wp_unslash( $_POST['nombre'] ) );
 		$id_modelo  = (int) $_POST['id_modelo'];
