@@ -1,6 +1,6 @@
 <?php
 /**
- * File: kfp-formulario-mania/inc/crear-tablas.php
+ * File: kfp-formulario-mania/inc/activate.php
  *
  * @package kfp-fman
  */
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || die();
  *
  * @return void
  */
-function kfp_fman_crear_tablas() {
+function kfp_fman_activate() {
 	global $wpdb;
 	$sql                        = array();
 	$tabla_dispositivo          = $wpdb->prefix . 'dispositivo';
@@ -65,4 +65,7 @@ function kfp_fman_crear_tablas() {
 
 	include_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	dbDelta( $sql );
+
+	// Guarda o actualiza la versión del plugin en las option de WordPress.
+	update_option( 'kfp_fman_plugin_version', KFP_FMAN_VERSION );
 }
