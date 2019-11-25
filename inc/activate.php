@@ -31,6 +31,7 @@ function kfp_fman_activate() {
         id_modelo mediumint(9),
         id_variante mediumint(9),
         id_usuario mediumint(9),
+		id_term_provincia mediumint(9),
         numero_serie varchar(50),
         created_at datetime NOT NULL,
         PRIMARY KEY (id)
