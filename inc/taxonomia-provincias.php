@@ -16,7 +16,7 @@ function kfp_fman_taxonomy_provincias() {
 	$labels = array(
 		'name'                       => _x( 'Provincias', 'Taxonomy General Name', 'kfp_fman' ),
 		'singular_name'              => _x( 'Provincia', 'Taxonomy Singular Name', 'kfp_fman' ),
-		'menu_name'                  => __( 'Provincias', 'kfp_fman' ),
+		'menu_name'                  => __( 'Provincias-fman', 'kfp_fman' ),
 		'all_items'                  => __( 'Todas las provincias', 'kfp_fman' ),
 		'new_item_name'              => __( 'Nueva provincia', 'kfp_fman' ),
 		'add_new_item'               => __( 'Añadir nueva provincia', 'kfp_fman' ),
