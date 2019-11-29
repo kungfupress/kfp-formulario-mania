@@ -21,11 +21,13 @@ define( 'KFP_FMAN_VERSION', $plugin_data['Version'] );
 require_once KFP_FMAN_DIR . 'inc/activate.php';
 require_once KFP_FMAN_DIR . 'inc/crear-datos-ejemplo.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-simple.php';
+require_once KFP_FMAN_DIR . 'inc/shortcode-select-taxonomia.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-enlazado.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-triple.php';
 require_once KFP_FMAN_DIR . 'inc/shortcode-select-user.php';
 require_once KFP_FMAN_DIR . 'inc/graba-select-enlazado.php';
 require_once KFP_FMAN_DIR . 'inc/graba-select-triple.php';
+require_once KFP_FMAN_DIR . 'inc/taxonomia-provincias.php';
 
 register_activation_hook( __FILE__, 'kfp_fman_activate' );
 register_activation_hook( __FILE__, 'kfp_fman_crear_datos_ejemplo' );
